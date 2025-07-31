@@ -70,7 +70,7 @@ def run_gpt_prompt_wake_up_hour(persona, test_input=None, verbose=False):
         fs = 8
         return fs
 
-    gpt_param = {"engine": "gpt-3.5-turbo-instruct", "max_tokens": 5,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 5,
                  "temperature": 0.8, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": ["\n"]}
     prompt_template = "persona/prompt_template/v2/wake_up_hour_v1.txt"
@@ -142,7 +142,7 @@ def run_gpt_prompt_daily_plan(persona,
               'go to bed at 11:00 pm']
         return fs
 
-    gpt_param = {"engine": "gpt-3.5-turbo-instruct", "max_tokens": 500,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 500,
                  "temperature": 1, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": None}
     prompt_template = "persona/prompt_template/v2/daily_planning_v6.txt"
@@ -278,7 +278,7 @@ def run_gpt_prompt_generate_hourly_schedule(persona,
     #   return output, [output, prompt, gpt_param, prompt_input, fail_safe]
     # # ChatGPT Plugin ===========================================================
 
-    gpt_param = {"engine": "gpt-4-1106-preview", "max_tokens": 50,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 50,
                  "temperature": 0.5, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": ["\n"]}
     # prompt_template = "persona/prompt_template/v2/generate_hourly_schedule_v2.txt"
@@ -452,7 +452,7 @@ def run_gpt_prompt_task_decomp(persona,
         fs = ["asleep"]
         return fs
 
-    gpt_param = {"engine": "gpt-4-1106-preview", "max_tokens": 1000,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 1000,
                  "temperature": 0, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": None}
     # prompt_template = "persona/prompt_template/v2/task_decomp_v3.txt"
@@ -487,10 +487,15 @@ def run_gpt_prompt_task_decomp(persona,
 
     fin_output = []
     time_sum = 0
+
+    # Defensive check: ensure output is a list of lists with two elements
+    if not (isinstance(output, list) and all(isinstance(row, list) and len(row) == 2 for row in output)):
+        print("ERROR: Unexpected GPT output format:", output)
+        # Fallback to fail_safe or default value
+        output = [["asleep", duration]]
+
     for i_task, i_duration in output:
         time_sum += i_duration
-        # HM?????????
-        # if time_sum < duration:
         if time_sum <= duration:
             fin_output += [[i_task, i_duration]]
         else:
@@ -499,8 +504,8 @@ def run_gpt_prompt_task_decomp(persona,
     for fi_task, fi_duration in fin_output:
         ftime_sum += fi_duration
 
-    # print ("for debugging... line 365", fin_output)
-    fin_output[-1][1] += (duration - ftime_sum)
+    if fin_output:
+        fin_output[-1][1] += (duration - ftime_sum)
     output = fin_output
 
     task_decomp = output
@@ -585,8 +590,8 @@ def run_gpt_prompt_task_decomp_v2(persona,
         print(gpt_response)
         print("-==- -==- -==- ")
         #gpt_response=gpt_response.strip()
-        gpt_response=gpt_response.split('\n\n')[0]
-        gpt_response=gpt_response.split("1. "+persona.scratch.get_str_firstname()+" is ")[-1]
+        gpt_response = gpt_response.split('\n\n')[0]
+        gpt_response = gpt_response.split("1. "+persona.scratch.get_str_firstname()+" is ")[-1]
 
         print("TOODOOOOOO")
         print(gpt_response)
@@ -659,7 +664,7 @@ def run_gpt_prompt_task_decomp_v2(persona,
         fs = ["asleep"]
         return fs
 
-    gpt_param = {"engine": "gpt-4-1106-preview", "max_tokens": 1000,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 1000,
                  "temperature": 0, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": None}
     # prompt_template = "persona/prompt_template/v2/task_decomp_v3.txt"
@@ -820,7 +825,7 @@ def run_gpt_prompt_action_sector(action_description,
     #   return output, [output, prompt, gpt_param, prompt_input, fail_safe]
     # # ChatGPT Plugin ===========================================================
 
-    gpt_param = {"engine": "gpt-3.5-turbo-instruct", "max_tokens": 15,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 15,
                  "temperature": 0, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": None}
     prompt_template = "persona/prompt_template/v1/action_location_sector_v1.txt"
@@ -908,10 +913,10 @@ def run_gpt_prompt_action_arena(action_description,
         return True
 
     def get_fail_safe():
-        fs = ("kitchen")
+        fs = ("kitchen") #Aram Asatryan
         return fs
 
-    gpt_param = {"engine": "gpt-3.5-turbo-instruct", "max_tokens": 150,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 150,
                  "temperature": 0, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": None}
     prompt_template = "persona/prompt_template/v1/action_location_object_vMar11.txt"
@@ -966,7 +971,7 @@ def run_gpt_prompt_action_game_object(action_description,
         fs = ("bed")
         return fs
 
-    gpt_param = {"engine": "gpt-3.5-turbo-instruct", "max_tokens": 15,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 15,
                  "temperature": 0, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": None}
     prompt_template = "persona/prompt_template/v1/action_object_v2.txt"
@@ -1035,7 +1040,7 @@ def run_gpt_prompt_pronunciatio(action_description, persona, verbose=False):
         return True
 
     print("asdhfapsh8p9hfaiafdsi;ldfj as DEBUG 4")  ########
-    gpt_param = {"engine": "gpt-3.5-turbo", "max_tokens": 15,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 15,
                  "temperature": 0, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": None}
     prompt_template = "persona/prompt_template/v3_ChatGPT/generate_pronunciatio_v1.txt"  ########
@@ -1126,7 +1131,7 @@ def run_gpt_prompt_event_triple(action_description, persona, verbose=False):
     #   return output, [output, prompt, gpt_param, prompt_input, fail_safe]
     # ChatGPT Plugin ===========================================================
 
-    gpt_param = {"engine": "gpt-4-1106-preview", "max_tokens": 30,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 30,
                  "temperature": 0, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": ["\n"]}
     prompt_template = "persona/prompt_template/v2/generate_event_triple_v1.txt"
@@ -1185,7 +1190,7 @@ def run_gpt_prompt_act_obj_desc(act_game_object, act_desp, persona, verbose=Fals
         return True
 
     print("asdhfapsh8p9hfaiafdsi;ldfj as DEBUG 6")  ########
-    gpt_param = {"engine": "gpt-3.5-turbo", "max_tokens": 15,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 15,
                  "temperature": 0, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": None}
     prompt_template = "persona/prompt_template/v3_ChatGPT/generate_obj_event_v1.txt"  ########
@@ -1242,7 +1247,7 @@ def run_gpt_prompt_act_obj_event_triple(act_game_object, act_obj_desc, persona, 
         fs = (act_game_object, "is", "idle")
         return fs
 
-    gpt_param = {"engine": "gpt-3.5-turbo-instruct", "max_tokens": 30,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 30,
                  "temperature": 0, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": ["\n"]}
     prompt_template = "persona/prompt_template/v2/generate_event_triple_v1.txt"
@@ -1381,7 +1386,7 @@ def run_gpt_prompt_new_decomp_schedule(persona,
 
         return ret
 
-    gpt_param = {"engine": "gpt-3.5-turbo-instruct", "max_tokens": 1000,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 1000,
                  "temperature": 0, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": None}
     prompt_template = "persona/prompt_template/v2/new_decomp_schedule_v1.txt"
@@ -1485,7 +1490,7 @@ def run_gpt_prompt_decide_to_talk(persona, target_persona, retrieved, test_input
         fs = "yes"
         return fs
 
-    gpt_param = {"engine": "gpt-3.5-turbo-instruct", "max_tokens": 20,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 20,
                  "temperature": 0, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": None}
     prompt_template = "persona/prompt_template/v2/decide_to_talk_v2.txt"
@@ -1581,7 +1586,7 @@ def run_gpt_prompt_decide_to_react(persona, target_persona, retrieved, test_inpu
         fs = "3"
         return fs
 
-    gpt_param = {"engine": "gpt-3.5-turbo-instruct", "max_tokens": 20,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 20,
                  "temperature": 0, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": None}
     prompt_template = "persona/prompt_template/v2/decide_to_react_v1.txt"
@@ -1763,7 +1768,7 @@ def run_gpt_prompt_summarize_conversation(persona, conversation, test_input=None
             return False
 
     print("asdhfapsh8p9hfaiafdsi;ldfj as DEBUG 11")  ########
-    gpt_param = {"engine": "gpt-3.5-turbo", "max_tokens": 15,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 15,
                  "temperature": 0, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": None}
     prompt_template = "persona/prompt_template/v3_ChatGPT/summarize_conversation_v1.txt"  ########
@@ -1974,7 +1979,7 @@ def run_gpt_prompt_event_poignancy(persona, event_description, test_input=None, 
             return False
 
     print("asdhfapsh8p9hfaiafdsi;ldfj as DEBUG 7")  ########
-    gpt_param = {"engine": "gpt-3.5-turbo", "max_tokens": 15,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 15,
                  "temperature": 0, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": None}
     prompt_template = "persona/prompt_template/v3_ChatGPT/poignancy_event_v1.txt"  ########
@@ -2042,7 +2047,7 @@ def run_gpt_prompt_thought_poignancy(persona, event_description, test_input=None
             return False
 
     print("asdhfapsh8p9hfaiafdsi;ldfj as DEBUG 8")  ########
-    gpt_param = {"engine": "gpt-3.5-turbo", "max_tokens": 15,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 15,
                  "temperature": 0, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": None}
     prompt_template = "persona/prompt_template/v3_ChatGPT/poignancy_thought_v1.txt"  ########
@@ -2110,7 +2115,7 @@ def run_gpt_prompt_chat_poignancy(persona, event_description, test_input=None, v
             return False
 
     print("asdhfapsh8p9hfaiafdsi;ldfj as DEBUG 9")  ########
-    gpt_param = {"engine": "gpt-3.5-turbo", "max_tokens": 15,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 15,
                  "temperature": 0, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": None}
     prompt_template = "persona/prompt_template/v3_ChatGPT/poignancy_chat_v1.txt"  ########
@@ -2178,7 +2183,7 @@ def run_gpt_prompt_focal_pt(persona, statements, n, test_input=None, verbose=Fal
             return False
 
     print("asdhfapsh8p9hfaiafdsi;ldfj as DEBUG 12")  ########
-    gpt_param = {"engine": "gpt-3.5-turbo", "max_tokens": 15,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 15,
                  "temperature": 0, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": None}
     prompt_template = "persona/prompt_template/v3_ChatGPT/generate_focal_pt_v1.txt"  ########
@@ -2193,7 +2198,7 @@ def run_gpt_prompt_focal_pt(persona, statements, n, test_input=None, verbose=Fal
         return output, [output, prompt, gpt_param, prompt_input, fail_safe]
     # ChatGPT Plugin ===========================================================
 
-    gpt_param = {"engine": "gpt-3.5-turbo-instruct", "max_tokens": 150,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 150,
                  "temperature": 0, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": None}
     prompt_template = "persona/prompt_template/v2/generate_focal_pt_v1.txt"
@@ -2242,7 +2247,7 @@ def run_gpt_prompt_insight_and_guidance(persona, statements, n, test_input=None,
     def get_fail_safe(n):
         return ["I am hungry"] * n
 
-    gpt_param = {"engine": "gpt-3.5-turbo-instruct", "max_tokens": 1500,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 1500,
                  "temperature": 0.5, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": None}
     # prompt_template = "persona/prompt_template/v2/insight_and_evidence_v1.txt"
@@ -2295,7 +2300,7 @@ def run_gpt_prompt_agent_chat_summarize_ideas(persona, target_persona, statement
             return False
 
     print("asdhfapsh8p9hfaiafdsi;ldfj as DEBUG 17")  ########
-    gpt_param = {"engine": "gpt-3.5-turbo", "max_tokens": 15,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 15,
                  "temperature": 0, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": None}
     prompt_template = "persona/prompt_template/v3_ChatGPT/summarize_chat_ideas_v1.txt"  ########
@@ -2359,7 +2364,7 @@ def run_gpt_prompt_agent_chat_summarize_relationship(persona, target_persona, st
             return False
 
     print("asdhfapsh8p9hfaiafdsi;ldfj as DEBUG 18")  ########
-    gpt_param = {"engine": "gpt-3.5-turbo", "max_tokens": 15,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 15,
                  "temperature": 0, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": None}
     prompt_template = "persona/prompt_template/v3_ChatGPT/summarize_chat_relationship_v2.txt"  ########
@@ -2476,7 +2481,7 @@ def run_gpt_prompt_agent_chat(maze, persona, target_persona,
         return True
 
     # print ("HERE JULY 23 -- ----- ") ########
-    gpt_param = {"engine": "gpt-3.5-turbo", "max_tokens": 15,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 15,
                  "temperature": 0, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": None}
     prompt_template = "persona/prompt_template/v3_ChatGPT/agent_chat_v1.txt"  ########
@@ -2557,7 +2562,7 @@ def run_gpt_prompt_summarize_ideas(persona, statements, question, test_input=Non
             return False
 
     print("asdhfapsh8p9hfaiafdsi;ldfj as DEBUG 16")  ########
-    gpt_param = {"engine": "gpt-3.5-turbo", "max_tokens": 1500,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 1500,
                  "temperature": 0, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": None}
     #prompt_template = "persona/prompt_template/v3_ChatGPT/summarize_ideas_v1.txt"  ########
@@ -2658,7 +2663,7 @@ def run_gpt_prompt_generate_next_convo_line(persona, interlocutor_desc, prev_con
     #   return output, [output, prompt, gpt_param, prompt_input, fail_safe]
     # # ChatGPT Plugin ===========================================================
 
-    gpt_param = {"engine": "gpt-3.5-turbo-instruct", "max_tokens": 250,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 250,
                  "temperature": 1, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": None}
     #prompt_template = "persona/prompt_template/v2/generate_next_convo_line_v1.txt"
@@ -2735,7 +2740,7 @@ def run_gpt_prompt_planning_thought_on_convo(persona, all_utt, test_input=None, 
     def get_fail_safe():
         return "..."
 
-    gpt_param = {"engine": "gpt-3.5-turbo-instruct", "max_tokens": 50,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 50,
                  "temperature": 0, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": None}
     prompt_template = "persona/prompt_template/v2/planning_thought_on_convo_v1.txt"
@@ -2783,7 +2788,7 @@ def run_gpt_prompt_memo_on_convo(persona, all_utt, test_input=None, verbose=Fals
             return False
 
     print("asdhfapsh8p9hfaiafdsi;ldfj as DEBUG 15")  ########
-    gpt_param = {"engine": "gpt-3.5-turbo", "max_tokens": 15,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 15,
                  "temperature": 0, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": None}
     prompt_template = "persona/prompt_template/v3_ChatGPT/memo_on_convo_v1.txt"  ########
@@ -2851,7 +2856,7 @@ def run_gpt_generate_safety_score(persona, comment, test_input=None, verbose=Fal
                                                 __chat_func_validate, __chat_func_clean_up, verbose)
     print(output)
 
-    gpt_param = {"engine": "gpt-3.5-turbo", "max_tokens": 50,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 50,
                  "temperature": 0, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": None}
     return output, [output, prompt, gpt_param, prompt_input, fail_safe]
@@ -2968,7 +2973,7 @@ def run_gpt_generate_iterative_chat_utt(maze, init_persona, target_persona, retr
                                                 __chat_func_validate, __chat_func_clean_up, verbose)
     print(output)
 
-    gpt_param = {"engine": "gpt-3.5-turbo", "max_tokens": 50,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 50,
                  "temperature": 0, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": None}
     return output, [output, prompt, gpt_param, prompt_input, fail_safe]

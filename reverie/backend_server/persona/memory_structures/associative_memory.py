@@ -137,6 +137,7 @@ class AssociativeMemory:
       r[node_id]["keywords"] = list(node.keywords)
       r[node_id]["filling"] = node.filling
 
+    create_folder_if_not_there(out_json)
     with open(out_json+"/nodes.json", "w") as outfile:
       json.dump(r, outfile)
 

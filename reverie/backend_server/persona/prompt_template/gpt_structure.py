@@ -20,7 +20,7 @@ def ChatGPT_single_request(prompt):
   temp_sleep()
 
   completion = openai.ChatCompletion.create(
-    model="gpt-3.5-turbo", 
+    model="gpt-4.1-nano", 
     messages=[{"role": "user", "content": prompt}]
   )
   return completion["choices"][0]["message"]["content"]
@@ -46,7 +46,7 @@ def GPT4_request(prompt):
 
   try: 
     completion = openai.ChatCompletion.create(
-    model="gpt-4-1106-preview", 
+    model="gpt-4.1-nano", 
     messages=[{"role": "user", "content": prompt}]
     )
     return completion["choices"][0]["message"]["content"]
@@ -71,7 +71,7 @@ def ChatGPT_request(prompt):
   temp_sleep()
   try: 
     completion = openai.ChatCompletion.create(
-    model="gpt-3.5-turbo", 
+    model="gpt-4.1-nano", 
     messages=[{"role": "user", "content": prompt}]
     )
     print(completion)
@@ -145,7 +145,7 @@ def ChatGPT_safe_generate_response(prompt,
       curr_gpt_response = ChatGPT_request(prompt).strip()
       end_index = curr_gpt_response.rfind('}') + 1
       curr_gpt_response = curr_gpt_response[:end_index]
-      curr_gpt_response = json.loads(curr_gpt_response)["output"]
+      curr_gpt_response = str(json.loads(curr_gpt_response)["output"])
 
       # print ("---ashdfaf")
       # print (curr_gpt_response)
@@ -333,8 +333,8 @@ def GPT4_safe_generate_response_OLD(prompt,
                 print(curr_gpt_response)
                 print("~~~~")
 
-        except:
-            pass
+        except Exception as e:
+            print("GPT4 request failed:", e)
     print("FAIL SAFE TRIGGERED")
     return fail_safe_response
 
@@ -353,7 +353,7 @@ def GPT4_request_t1(prompt):
 
     try:
         completion = openai.ChatCompletion.create(
-            model="gpt-4-1106-preview",
+            model="gpt-4.1-nano",
             messages=[{"role": "user", "content": prompt}],
             temperature=1
         )
@@ -403,8 +403,7 @@ def ChatGPT_request_t0(prompt):
     # temp_sleep()
     try:
         completion = openai.ChatCompletion.create(
-            # model="gpt-3.5-turbo",
-            model="gpt-3.5-turbo",
+            model="gpt-4.1-nano",
             messages=[{"role": "user", "content": prompt}],
             temperature=0
         )

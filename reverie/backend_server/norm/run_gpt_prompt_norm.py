@@ -38,7 +38,7 @@ def run_gpt_prompt_decide_if_norm_conflict(target_person_description, init_perso
         fs = "ERROR"
         return [fs]
 
-    gpt_param = {"engine": "gpt-4-1106-preview", "max_tokens": 20,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 20,
                  "temperature": 0, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": None}
     prompt_template = "norm/norm_retrieve_prompt/check_conflict_decide_talk_v5.txt"
@@ -88,7 +88,7 @@ def run_gpt_prompt_norm_reflect_from_thoughts(reletive_thoughts, verbose=False):
     def get_fail_safe():
         return ["I am hungry"]
 
-    gpt_param = {"engine": "gpt-4-1106-preview", "max_tokens": 150,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 150,
                  "temperature": 0.5, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": None}
     prompt_template = "norm/norm_identify_prompt/thought_reflect_v3.txt"
@@ -126,7 +126,7 @@ def run_gpt_prompt_norm_format(norm_str, verbose=False):
     def get_fail_safe():
         return False
 
-    gpt_param = {"engine": "gpt-3.5-turbo", "max_tokens": 150,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 150,
                  "temperature": 0.5, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": None}
     prompt_template = "norm/norm_identify_prompt/identify_norm_save_v3.txt"
@@ -172,7 +172,7 @@ def run_gpt_conflict_chat_reflect(all_utt, verbose=False):
     def get_fail_safe():
         return ["I am hungry"]
 
-    gpt_param = {"engine": "gpt-3.5-turbo", "max_tokens": 150,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 150,
                  "temperature": 0.5, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": None}
     prompt_template = "norm/norm_identify_prompt/conflict_chat_reflect_v1.txt"
@@ -215,7 +215,7 @@ def run_gpt_non_norm_conflict_chat_reflect(all_utt, verbose=False):
     def get_fail_safe():
         return ["I am hungry"]
 
-    gpt_param = {"engine": "gpt-3.5-turbo", "max_tokens": 150,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 150,
                  "temperature": 0, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": None}
     prompt_template = "norm/norm_identify_prompt/non_conflict_chat_reflect_v1.txt"
@@ -254,7 +254,7 @@ def run_gpt_chat_norms_summarize(all_utt, verbose=False):
     def get_fail_safe():
         return ["I am hungry"]
 
-    gpt_param = {"engine": "gpt-3.5-turbo", "max_tokens": 150,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 150,
                  "temperature": 0.5, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": None}
     prompt_template = "norm/norm_identify_prompt/chat_summarize_norms_v1.txt"
@@ -308,7 +308,7 @@ def run_gpt_immediate_evaluate_recognization(curr_norm_seed, curr_active_norms, 
     def get_fail_safe():
         return ["I am hungry"]
 
-    gpt_param = {"engine": "gpt-3.5-turbo", "max_tokens": 150,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 150,
                  "temperature": 0, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": None}
     prompt_template = "norm/norm_evaluate_prompt/immediate_evaluate_recognization_v1.txt"
@@ -394,7 +394,7 @@ def run_gpt_active_norms_classfication(curr_active_norms, verbose=False):
     def get_fail_safe():
         return False
 
-    gpt_param = {"engine": "gpt-3.5-turbo", "max_tokens": 150,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 150,
                  "temperature": 0, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": None}
     prompt_template = "norm/norm_evaluate_prompt/active_norms_classfication_v1.txt"
@@ -521,7 +521,7 @@ def run_gpt_norm_duplicate_check(candidate_norm, curr_active_norms, verbose=Fals
     def get_fail_safe():
         return ["I am hungry"]
 
-    gpt_param = {"engine": "gpt-4-1106-preview", "max_tokens": 150,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 150,
                  "temperature": 0, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": None}
     prompt_template = "norm/norm_evaluate_prompt/duplicate_check_v1.txt"
@@ -560,7 +560,7 @@ def run_gpt_norm_fact_consistency_check(candidate_norm, seed_related_desc, verbo
     def get_fail_safe():
         return ["I am hungry"]
 
-    gpt_param = {"engine": "gpt-3.5-turbo", "max_tokens": 150,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 150,
                  "temperature": 0, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": None}
     prompt_template = "norm/norm_evaluate_prompt/fact_consistency_check_v1.txt"
@@ -597,7 +597,7 @@ def run_gpt_norm_utility(candidate_norm, verbose=False):
     def get_fail_safe():
         return ["I am hungry"]
 
-    gpt_param = {"engine": "gpt-3.5-turbo", "max_tokens": 150,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 150,
                  "temperature": 0, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": None}
     prompt_template = "norm/norm_evaluate_prompt/norm_utility_v2.txt"
@@ -635,7 +635,7 @@ def run_gpt_norm_long_term_synthesis(classified_act_norms, verbose=False):
     def get_fail_safe():
         return False
 
-    gpt_param = {"engine": "gpt-3.5-turbo", "max_tokens": 150,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 150,
                  "temperature": 0, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": None}
     prompt_template = "norm/norm_evaluate_prompt/long_term_synthesis_v2.txt"
@@ -669,7 +669,7 @@ def run_gpt_active_norms_classfication_v2(curr_active_norms, verbose=False):
     def get_fail_safe():
         return False
 
-    gpt_param = {"engine": "gpt-4-1106-preview", "max_tokens": 150,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 150,
                  "temperature": 1, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": None}
     prompt_template = "norm/norm_evaluate_prompt/active_norms_classfication_v3.txt"
@@ -787,7 +787,7 @@ def run_gpt_long_term_norm_utility(candidate_norm, related_specific_norms, relat
     def get_fail_safe():
         return ["I am hungry"]
 
-    gpt_param = {"engine": "gpt-3.5-turbo", "max_tokens": 150,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 150,
                  "temperature": 0, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": None}
     prompt_template = "norm/norm_evaluate_prompt/abstract_norm_utility_v1.txt"
@@ -803,7 +803,7 @@ def run_gpt_long_term_norm_utility(candidate_norm, related_specific_norms, relat
 
 
 class SpecificNormUtility:
-    def __init__(self, system_msg, model="gpt-3.5-turbo-16k", temprature=0, max_tokens=4096, top_p=1,
+    def __init__(self, system_msg, model="gpt-4.1-mini", temprature=0, max_tokens=4096, top_p=1,
                  frequency_penalty=0, presence_penalty=0):
         # parameter
         self.msg = [{"role": "system", "content": system_msg}]
@@ -860,7 +860,7 @@ def run_gpt_revise_identity_plan(statements, p_name, time, verbose=False):
     def get_fail_safe():
         return False
 
-    gpt_param = {"engine": "gpt-3.5-turbo", "max_tokens": 150,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 150,
                  "temperature": 0, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": None}
     prompt_template = "norm/norm_compliance_prompt/revise_identity_plan_v1.txt"
@@ -895,7 +895,7 @@ def run_gpt_revise_identity_thought(statements, p_name, verbose=False):
     def get_fail_safe():
         return False
 
-    gpt_param = {"engine": "gpt-3.5-turbo", "max_tokens": 150,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 150,
                  "temperature": 0, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": None}
     prompt_template = "norm/norm_compliance_prompt/revise_identity_thought_v1.txt"
@@ -934,7 +934,7 @@ def run_gpt_revise_identity_currently(persona, plan_note, thought_note, curr_act
     def get_fail_safe():
         return False
 
-    gpt_param = {"engine": "gpt-3.5-turbo", "max_tokens": 150,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 150,
                  "temperature": 0, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": None}
     prompt_template = "norm/norm_compliance_prompt/revise_identity_currently_v1.txt"
@@ -971,7 +971,7 @@ def run_gpt_revise_identity_daily_plan_req(persona, curr_act_norms, verbose=Fals
     def get_fail_safe():
         return False
 
-    gpt_param = {"engine": "gpt-3.5-turbo", "max_tokens": 150,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 150,
                  "temperature": 0, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": None}
     prompt_template = "norm/norm_compliance_prompt/revise_identity_daily_plan_req_v1.txt"
@@ -1025,7 +1025,7 @@ def run_gpt_prompt_daily_plan_v2(persona, wake_up_hour, curr_act_norm, test_inpu
               'go to bed at 11:00 pm']
         return fs
 
-    gpt_param = {"engine": "gpt-3.5-turbo", "max_tokens": 500,
+    gpt_param = {"engine": "gpt-4.1-nano", "max_tokens": 500,
                  "temperature": 1, "top_p": 1, "stream": False,
                  "frequency_penalty": 0, "presence_penalty": 0, "stop": None}
     prompt_template = "norm/norm_compliance_prompt/daily_planning_compliance_v2.txt"

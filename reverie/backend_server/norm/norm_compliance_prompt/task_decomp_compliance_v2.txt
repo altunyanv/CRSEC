@@ -45,6 +45,12 @@ In 5-minute increments, list the subtasks Kelly does when she is having lunch an
 !<INPUT 0>!
 !<INPUT 1>!
 Taking into account compliance with existing active norms, in 5 min increments, list the subtasks !<INPUT 2>! does when !<INPUT 3>! is !<INPUT 4>! from !<INPUT 5>! (total duration in minutes !<INPUT 6>!):
-(ATTENTION: Time must NOT exceeds the planned duration! Use the present continuous tense! If you support the tipping culture, please include the action of tipping after finishing your meal! Conversely, if you oppose the tipping culture, include the action of not tipping after finishing your meal! Do NOT output anything except for actions, such as score of norms. A NEGATIVE EXAMPLE: "!<INPUT 7>! is clearing her table and disposing of any trash she has, in line with norm [70]". ONLY output actions. AN GOOD EXAMPLE: "!<INPUT 7>! is clearing her table and disposing of any trash she has.")
+
+ATTENTION: 
+* Time must NOT exceeds the planned duration! Use the present continuous tense! 
+* If you support the tipping culture, please include the action of tipping after finishing your meal! Conversely, if you oppose the tipping culture, include the action of not tipping after finishing your meal! 
+* Do NOT output anything except for actions, (numbered as 1, 2, 3 ...), such as score of norms. ONLY output actions.
+    A NEGATIVE EXAMPLE: "!<INPUT 7>! is clearing her table and disposing of any trash she has, in line with norm [70]".  
+    A GOOD EXAMPLE (FOLLOW THIS STRUCTURE): "!<INPUT 7>! is clearing her table and disposing of any trash she has. (duration in minutes: 10, minutes left: 50)"
 
 1. !<INPUT 7>! is

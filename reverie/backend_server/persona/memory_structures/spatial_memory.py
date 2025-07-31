@@ -101,11 +101,15 @@ class MemoryTree:
     if not curr_arena: 
       return ""
 
-    try: 
-      x = ", ".join(list(self.tree[curr_world][curr_sector][curr_arena]))
-    except: 
-      x = ", ".join(list(self.tree[curr_world][curr_sector][curr_arena.lower()]))
-    return x
+    if curr_arena in self.tree[curr_world][curr_sector]:
+      return ", ".join(list(self.tree[curr_world][curr_sector][curr_arena]))
+    elif curr_arena.lower() in self.tree[curr_world][curr_sector]:
+      # If the arena is not found in the exact case, try lower case
+      return ", ".join(list(self.tree[curr_world][curr_sector][curr_arena.lower()]))
+    else:
+      # If the arena is not found at all, return an empty string
+      return ", ".join(list(next(iter(self.tree[curr_world][curr_sector].values()))))
+  
 
 
 if __name__ == '__main__':

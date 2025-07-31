@@ -3,6 +3,8 @@ import sys
 sys.path.append('../')
 from persona.persona import *
 def norm_save(persona, out_json):
+    create_folder_if_not_there(out_json)
+
     '''
 
     Args:

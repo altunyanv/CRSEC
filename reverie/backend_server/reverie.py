@@ -38,6 +38,7 @@ from persona.persona import *
 from norm.creation import *
 from norm.norm_save import *
 from norm.norm_evaluate import *
+from environment_manager import create_environment_manager
 
 ##############################################################################
 #                                  REVERIE                                   #
@@ -157,6 +158,14 @@ class ReverieServer:
     with open(f"{fs_temp_storage}/curr_step.json", "w") as outfile: 
       outfile.write(json.dumps(curr_step, indent=2))
 
+    # ENVIRONMENT MANAGER: 
+    # Initialize environment manager for standalone operation
+    self.env_manager = create_environment_manager(self.sim_code, self.maze.maze_name)
+    
+    # Set initial positions from personas_tile
+    for persona_name, (x, y) in self.personas_tile.items():
+      self.env_manager.set_persona_position(persona_name, x, y)
+
 
   def save(self): 
     """
@@ -197,6 +206,34 @@ class ReverieServer:
       
       print("persona.norm_database.norm_count:",persona.norm_database.norm_count)
       norm_save(persona,save_folder)
+
+
+  def run_standalone(self, steps):
+    """
+    Run the simulation in standalone mode without requiring frontend server.
+    This generates environment files automatically and runs the simulation.
+
+    INPUT
+      steps: Number of steps to run the simulation
+    OUTPUT 
+      None
+    """
+    print(f"Running simulation in standalone mode for {steps} steps...")
+    print(f"Simulation: {self.sim_code}")
+    print(f"Current step: {self.step}")
+    print(f"Current time: {self.curr_time.strftime('%B %d, %Y, %H:%M:%S')}")
+    
+    # Generate initial environment file if it doesn't exist
+    initial_env_file = f"{fs_storage}/{self.sim_code}/environment/{self.step}.json"
+    if not check_if_file_exists(initial_env_file):
+      print("Generating initial environment file...")
+      self.env_manager.generate_environment_file(self.step)
+    
+    # Run the simulation
+    self.start_server(steps)
+    
+    print(f"Simulation completed. Final step: {self.step}")
+    print(f"Final time: {self.curr_time.strftime('%B %d, %Y, %H:%M:%S')}")
 
 
   def start_path_tester_server(self): 
@@ -320,20 +357,25 @@ class ReverieServer:
       if int_counter == 0: 
         break
 
-      # <curr_env_file> file is the file that our frontend outputs. When the
-      # frontend has done its job and moved the personas, then it will put a 
-      # new environment file that matches our step count. That's when we run 
-      # the content of this for loop. Otherwise, we just wait. 
+      # STANDALONE ENVIRONMENT GENERATION:
+      # Instead of waiting for frontend to create environment files, 
+      # we generate them using the environment manager based on current positions
       curr_env_file = f"{sim_folder}/environment/{self.step}.json"
-      if check_if_file_exists(curr_env_file):
-        # If we have an environment file, it means we have a new perception
-        # input to our personas. So we first retrieve it.
-        try: 
-          # Try and save block for robustness of the while loop.
+      
+      # Update environment manager with current positions
+      for persona_name, (x, y) in self.personas_tile.items():
+        self.env_manager.set_persona_position(persona_name, x, y)
+      
+      # Generate environment file for current step
+      env_retrieved = self.env_manager.generate_environment_file(self.step)
+      
+      if env_retrieved:
+        # Load the generated environment file
+        try:
           with open(curr_env_file) as json_file:
             new_env = json.load(json_file)
-            env_retrieved = True
-        except: 
+        except:
+          env_retrieved = False
           pass
       
         if env_retrieved: 
@@ -412,6 +454,13 @@ class ReverieServer:
           curr_move_file = f"{sim_folder}/movement/{self.step}.json"
           with open(curr_move_file, "w") as outfile: 
             outfile.write(json.dumps(movements, indent=2))
+
+          # Update environment manager with new positions for next iteration
+          for persona_name, persona_data in movements["persona"].items():
+            if "movement" in persona_data:
+              next_pos = persona_data["movement"]
+              if len(next_pos) >= 2:
+                self.env_manager.set_persona_position(persona_name, next_pos[0], next_pos[1])
 
           # After this cycle, the world takes one step forward, and the 
           # current time moves by <sec_per_step> amount. 
@@ -623,59 +672,4 @@ if __name__ == '__main__':
   rs = ReverieServer(origin, target)
 
   Create(rs)
-
-
-
   rs.open_server()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
